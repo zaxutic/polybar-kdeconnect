@@ -6,22 +6,52 @@ YOFFSET=0
 XOFFSET=0
 WIDTH=12
 WIDTH_WIDE=24
-THEME=solarized
+
+base=#1e1e2e
+mantle=#181825
+crust=#11111b
+
+text=#cdd6f4
+subtext0=#a6adc8
+subtext1=#bac2de
+
+surface0=#313244
+surface1=#45475a
+surface2=#585b70
+
+overlay0=#6c7086
+overlay1=#7f849c
+overlay2=#9399b2
+
+blue=#89b4fa
+lavender=#b4befe
+sapphire=#74c7ec
+sky=#89dceb
+teal=#94e2d5
+green=#a6e3a1
+yellow=#f9e2af
+peach=#fab387
+maroon=#eba0ac
+red=#f38ba8
+mauve=#cba6f7
+pink=#f5c2e7
+flamingo=#f2cdcd
+rosewater=#f5e0dc
 
 # Color Settings of Icon shown in Polybar
-COLOR_DISCONNECTED='#000'       # Device Disconnected
-COLOR_NEWDEVICE='#ff0'          # New Device
-COLOR_BATTERY_90='#fff'         # Battery >= 90
+COLOR_DISCONNECTED=$crust       # Device Disconnected
+COLOR_NEWDEVICE=$yellow          # New Device
+COLOR_BATTERY_90=$text         # Battery >= 90
 COLOR_BATTERY_80='#ccc'         # Battery >= 80
 COLOR_BATTERY_70='#aaa'         # Battery >= 70
 COLOR_BATTERY_60='#888'         # Battery >= 60
 COLOR_BATTERY_50='#666'         # Battery >= 50
-COLOR_BATTERY_LOW='#f00'        # Battery <  50
+COLOR_BATTERY_LOW=$red        # Battery <  50
 
 # Icons shown in Polybar
-ICON_SMARTPHONE=''
+ICON_SMARTPHONE=''
 ICON_TABLET=''
-SEPERATOR='|'
+SEPERATOR=' '
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -57,7 +87,7 @@ show_devices (){
 }
 
 show_menu () {
-    menu="$(rofi -sep "|" -dmenu -i -p "$DEV_NAME" -location $LOCATION -yoffset $YOFFSET -xoffset $XOFFSET -theme $THEME -width $WIDTH -hide-scrollbar -line-padding 4 -padding 20 -lines 5 <<< "Battery: $DEV_BATTERY%|Ping|Find Device|Send File|Browse Files|Unpair")"
+    menu="$(rofi -sep "|" -dmenu -i -p "$DEV_NAME" -location $LOCATION -yoffset $YOFFSET -xoffset $XOFFSET -width $WIDTH -hide-scrollbar -line-padding 4 -padding 20 -lines 5 <<< "Battery: $DEV_BATTERY%|Ping|Find Device|Send File|Browse Files|Unpair")"
                 case "$menu" in
                     *Ping) qdbus org.kde.kdeconnect "/modules/kdeconnect/devices/$DEV_ID/ping" org.kde.kdeconnect.device.ping.sendPing ;;
                     *'Find Device') qdbus org.kde.kdeconnect "/modules/kdeconnect/devices/$DEV_ID/findmyphone" org.kde.kdeconnect.device.findmyphone.ring ;;
@@ -73,14 +103,14 @@ show_menu () {
 }
 
 show_pmenu () {
-    menu="$(rofi -sep "|" -dmenu -i -p "$DEV_NAME" -location $LOCATION -yoffset $YOFFSET -xoffset $XOFFSET -theme $THEME -width $WIDTH -hide-scrollbar -line-padding 1 -padding 20 -lines 1<<<"Pair Device")"
+    menu="$(rofi -sep "|" -dmenu -i -p "$DEV_NAME" -location $LOCATION -yoffset $YOFFSET -xoffset $XOFFSET -width $WIDTH -hide-scrollbar -line-padding 1 -padding 20 -lines 1<<<"Pair Device")"
                 case "$menu" in
                     *'Pair Device') qdbus org.kde.kdeconnect "/modules/kdeconnect/devices/$DEV_ID" org.kde.kdeconnect.device.requestPair
                 esac
 }
 
 show_pmenu2 () {
-    menu="$(rofi -sep "|" -dmenu -i -p "$1 has sent a pairing request" -location $LOCATION -yoffset $YOFFSET -xoffset $XOFFSET -theme $THEME -width $WIDTH_WIDE -hide-scrollbar -line-padding 4 -padding 20 -lines 2 <<< "Accept|Reject")"
+    menu="$(rofi -sep "|" -dmenu -i -p "$1 has sent a pairing request" -location $LOCATION -yoffset $YOFFSET -xoffset $XOFFSET -width $WIDTH_WIDE -hide-scrollbar -line-padding 4 -padding 20 -lines 2 <<< "Accept|Reject")"
                 case "$menu" in
                     *'Accept') qdbus org.kde.kdeconnect "/modules/kdeconnect/devices/$2" org.kde.kdeconnect.device.acceptPairing ;;
                     *) qdbus org.kde.kdeconnect "/modules/kdeconnect/devices/$2" org.kde.kdeconnect.device.rejectPairing
